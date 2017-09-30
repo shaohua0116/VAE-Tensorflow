@@ -1,24 +1,32 @@
 # Variational Autoencoder in Tensorflow
 
-This is an [Tensorflow](https://www.tensorflow.org/) implementation of a variational autoencoder for the deep learning course at USC (CSCI-599 Deep Learning and its Applications) taught by [Professor Joseph Lim](http://www-bcf.usc.edu/~limjj/). The slides of this lecture are available [here](#). This demo code is written by [Shao-Hua Sun](http://shaohua0116.github.io).
+This is an [Tensorflow](https://www.tensorflow.org/) implementation of a variational autoencoder for the deep learning course at USC ([CSCI-599 Deep Learning and its Applications](https://csci599-dl.github.io/)) taught by [Professor Joseph Lim](http://www-bcf.usc.edu/~limjj/). The slides of this lecture are available [here](#). This demo code is written by [Shao-Hua Sun](http://shaohua0116.github.io).
 
 ## Results
 
 ### Reconstruction
 
-<img src="figure/reconstructed.png" height="350"/>
+<p align="center">
+    <img src="figure/reconstructed.png" height="350"/>
+</p>    
 
 ### Generation
 
-<img src="figure/generated.png" height="350"/>
+<p align="center">
+    <img src="figure/generated.png" height="350"/>
+</p>    
 
 ### Transformation
 
-<img src="figure/transformed.png" height="350"/>
+<p align="center">
+    <img src="figure/transformed.png" height="350"/>
+</p>    
 
 ### Latent space
 
-<img src="figure/latent.png" height="350"/>
+<p align="center">
+    <img src="figure/latent.png" height="350"/>
+</p>    
 
 ## Related works
 
