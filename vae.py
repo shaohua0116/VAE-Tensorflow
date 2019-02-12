@@ -13,15 +13,18 @@ class VariantionalAutoencoder(object):
 
     # Build the netowrk and the loss functions
     def build(self):
-        self.x = tf.placeholder(name='x', dtype=tf.float32, shape=[None, input_dim])
+        self.x = tf.placeholder(
+            name='x', dtype=tf.float32, shape=[None, input_dim])
 
         # Encode
         # x -> z_mean, z_sigma -> z
         f1 = fc(self.x, 256, scope='enc_fc1', activation_fn=tf.nn.elu)
         f2 = fc(f1, 128, scope='enc_fc2', activation_fn=tf.nn.elu)
         f3 = fc(f2, 64, scope='enc_fc3', activation_fn=tf.nn.elu)
-        self.z_mu = fc(f3, self.n_z, scope='enc_fc4_mu', activation_fn=None)
-        self.z_log_sigma_sq = fc(f3, self.n_z, scope='enc_fc4_sigma', activation_fn=None)
+        self.z_mu = fc(f3, self.n_z, scope='enc_fc4_mu', 
+                       activation_fn=None)
+        self.z_log_sigma_sq = fc(f3, self.n_z, scope='enc_fc4_sigma', 
+                                 activation_fn=None)
         eps = tf.random_normal(
             shape=tf.shape(self.z_log_sigma_sq),
             mean=0, stddev=1, dtype=tf.float32)
@@ -32,7 +35,8 @@ class VariantionalAutoencoder(object):
         g1 = fc(self.z, 64, scope='dec_fc1', activation_fn=tf.nn.elu)
         g2 = fc(g1, 128, scope='dec_fc2', activation_fn=tf.nn.elu)
         g3 = fc(g2, 256, scope='dec_fc3', activation_fn=tf.nn.elu)
-        self.x_hat = fc(g3, input_dim, scope='dec_fc4', activation_fn=tf.sigmoid)
+        self.x_hat = fc(g3, input_dim, scope='dec_fc4', 
+                        activation_fn=tf.sigmoid)
 
         # Loss
         # Reconstruction loss
@@ -40,16 +44,19 @@ class VariantionalAutoencoder(object):
         # H(x, x_hat) = -\Sigma x*log(x_hat) + (1-x)*log(1-x_hat)
         epsilon = 1e-10
         recon_loss = -tf.reduce_sum(
-            self.x * tf.log(epsilon+self.x_hat) + (1-self.x) * tf.log(epsilon+1-self.x_hat), 
+            self.x * tf.log(epsilon+self.x_hat) + 
+            (1-self.x) * tf.log(epsilon+1-self.x_hat), 
             axis=1
         )
         self.recon_loss = tf.reduce_mean(recon_loss)
 
         # Latent loss
         # KL divergence: measure the difference between two distributions
-        # Here we measure the divergence between the latent distribution and N(0, 1)
+        # Here we measure the divergence between 
+        # the latent distribution and N(0, 1)
         latent_loss = -0.5 * tf.reduce_sum(
-            1 + self.z_log_sigma_sq - tf.square(self.z_mu) - tf.exp(self.z_log_sigma_sq), axis=1)
+            1 + self.z_log_sigma_sq - tf.square(self.z_mu) - 
+            tf.exp(self.z_log_sigma_sq), axis=1)
         self.latent_loss = tf.reduce_mean(latent_loss)
 
         self.total_loss = self.recon_loss + self.latent_loss
