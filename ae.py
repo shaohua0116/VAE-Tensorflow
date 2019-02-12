@@ -1,6 +1,6 @@
 class Autoencoder(object):
 
-    def __init__(self, learning_rate=1e-3, batch_size=64, n_z=10):
+    def __init__(self, learning_rate=1e-4, batch_size=64, n_z=16):
         self.learning_rate = learning_rate
         self.batch_size = batch_size
         self.n_z = n_z

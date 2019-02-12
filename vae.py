@@ -1,6 +1,6 @@
 class VariantionalAutoencoder(object):
 
-    def __init__(self, learning_rate=1e-3, batch_size=64, n_z=10):
+    def __init__(self, learning_rate=1e-4, batch_size=64, n_z=16):
         self.learning_rate = learning_rate
         self.batch_size = batch_size
         self.n_z = n_z
@@ -22,8 +22,9 @@ class VariantionalAutoencoder(object):
         f3 = fc(f2, 64, scope='enc_fc3', activation_fn=tf.nn.elu)
         self.z_mu = fc(f3, self.n_z, scope='enc_fc4_mu', activation_fn=None)
         self.z_log_sigma_sq = fc(f3, self.n_z, scope='enc_fc4_sigma', activation_fn=None)
-        eps = tf.random_normal(shape=tf.shape(self.z_log_sigma_sq),
-                               mean=0, stddev=1, dtype=tf.float32)
+        eps = tf.random_normal(
+            shape=tf.shape(self.z_log_sigma_sq),
+            mean=0, stddev=1, dtype=tf.float32)
         self.z = self.z_mu + tf.sqrt(tf.exp(self.z_log_sigma_sq)) * eps
 
         # Decode
@@ -45,7 +46,7 @@ class VariantionalAutoencoder(object):
         self.recon_loss = tf.reduce_mean(recon_loss)
 
         # Latent loss
-        # Kullback Leibler divergence: measure the difference between two distributions
+        # KL divergence: measure the difference between two distributions
         # Here we measure the divergence between the latent distribution and N(0, 1)
         latent_loss = -0.5 * tf.reduce_sum(
             1 + self.z_log_sigma_sq - tf.square(self.z_mu) - tf.exp(self.z_log_sigma_sq), axis=1)
